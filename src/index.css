@@ -43,6 +43,30 @@ header h1 {
 
 header p {
   color: var(--text-secondary);
+  margin-bottom: 1.5rem;
+}
+
+.mobile-params-toggle {
+  display: none;
+  width: 100%;
+  max-width: 300px;
+  margin: 0 auto;
+  padding: 0.8rem 1.5rem;
+  background: linear-gradient(135deg, var(--accent-green), var(--accent-blue));
+  border: none;
+  border-radius: 2rem;
+  color: white;
+  font-weight: 700;
+  font-size: 1rem;
+  cursor: pointer;
+  box-shadow: 0 4px 15px rgba(16, 185, 129, 0.4);
+  transition: all 0.3s ease;
+  animation: fadeIn 0.8s ease;
+}
+
+.mobile-params-toggle:active {
+  transform: scale(0.95);
+  box-shadow: 0 2px 8px rgba(16, 185, 129, 0.3);
 }
 
 .dashboard {
@@ -140,13 +164,96 @@ input[type="range"] {
   color: var(--text-secondary);
 }
 
-.metric-label {
+.metric-breakdown {
+  margin-top: 1.5rem;
   color: var(--text-secondary);
-  font-size: 1.1rem;
+  font-size: 0.9rem;
+  text-align: left;
 }
 
-.lcoh .metric-value { color: var(--accent-green); }
-.methane .metric-value { color: var(--accent-blue); }
+.breakdown-row {
+  display: flex;
+  justify-content: space-between;
+}
+
+.highlight-row {
+  margin-top: 0.5rem;
+  border-top: 1px solid var(--border-color);
+  padding-top: 0.5rem;
+  color: var(--accent-orange);
+}
+
+.input-field {
+  margin-bottom: 0.75rem;
+  padding: 0.75rem;
+  border-radius: 0.8rem;
+  background: rgba(255, 255, 255, 0.03);
+  transition: all 0.3s ease;
+  cursor: pointer;
+  border: 1px solid transparent;
+}
+
+.input-field:hover {
+  background: rgba(255, 255, 255, 0.05);
+  border-color: rgba(255, 255, 255, 0.1);
+}
+
+.input-field.active {
+  background: rgba(16, 185, 129, 0.08);
+  border-color: var(--accent-green);
+}
+
+.input-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.input-header label {
+  margin-bottom: 0;
+  cursor: pointer;
+  flex: 1;
+}
+
+.input-summary {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+}
+
+.edit-icon {
+  font-size: 1rem;
+  color: var(--accent-green);
+  opacity: 0.6;
+}
+
+.input-field.active .edit-icon {
+  transform: rotate(45deg);
+  opacity: 1;
+}
+
+.slider-container {
+  height: 0;
+  overflow: hidden;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  opacity: 0;
+  pointer-events: none;
+}
+
+.input-field.active .slider-container {
+  height: 40px;
+  margin-top: 1rem;
+  opacity: 1;
+  pointer-events: auto;
+}
+
+.lcoh .metric-value {
+  color: var(--accent-green);
+}
+
+.methane .metric-value {
+  color: var(--accent-blue);
+}
 
 .charts-grid {
   display: grid;
@@ -175,6 +282,56 @@ input[type="range"] {
   color: var(--text-secondary);
 }
 
+.sidebar-actions {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  margin-top: 1rem;
+  padding-top: 1.5rem;
+  border-top: 1px solid var(--border-color);
+}
+
+.btn-secondary {
+  width: 100%;
+  padding: 0.75rem;
+  border-radius: 0.6rem;
+  border: 1px solid var(--border-color);
+  background: rgba(255, 255, 255, 0.05);
+  color: var(--text-primary);
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+}
+
+.btn-secondary:hover {
+  background: rgba(255, 255, 255, 0.1);
+  border-color: var(--text-secondary);
+}
+
+.btn-reset {
+  color: var(--accent-orange);
+  border-color: rgba(245, 158, 11, 0.3);
+}
+
+.btn-reset:hover {
+  background: rgba(245, 158, 11, 0.1);
+  border-color: var(--accent-orange);
+}
+
+.btn-return {
+  color: var(--accent-blue);
+  border-color: rgba(59, 130, 246, 0.3);
+}
+
+.btn-return:hover {
+  background: rgba(59, 130, 246, 0.1);
+  border-color: var(--accent-blue);
+}
+
 footer {
   margin-top: 4rem;
   text-align: center;
@@ -185,10 +342,517 @@ footer {
 
 /* Animations */
 @keyframes fadeIn {
-  from { opacity: 0; transform: translateY(10px); }
-  to { opacity: 1; transform: translateY(0); }
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
 }
 
 .card {
   animation: fadeIn 0.5s ease forwards;
+}
+
+/* Mobile Responsive Adjustments */
+@media (max-width: 768px) {
+  .container {
+    padding: 1rem 0.5rem;
+    overflow-x: hidden;
+  }
+
+  header {
+    margin-bottom: 2rem;
+    padding: 0 1rem;
+  }
+
+  header h1 {
+    font-size: 1.8rem;
+  }
+
+  .dashboard {
+    display: flex;
+    flex-direction: column;
+    /* Normal direction, we use 'order' to rearrange */
+    gap: 1.5rem;
+  }
+
+  .mobile-params-toggle {
+    display: block;
+  }
+
+  .sidebar {
+    order: 10;
+    /* Put parameters at the absolute bottom */
+    padding: 0 0.5rem;
+  }
+
+  .main-content {
+    order: 1;
+    /* Metrics at the top */
+    gap: 1rem;
+  }
+
+  .charts-grid {
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+  }
+
+  .waterfall-wrapper {
+    order: 1;
+    /* Right after metrics */
+  }
+
+  .sensitivity-wrapper {
+    order: 2;
+    /* After waterfall */
+  }
+
+  .h2-breakdown {
+    order: 3;
+    /* Near bottom */
+  }
+
+  .methane-breakdown {
+    order: 4;
+    /* Near bottom */
+  }
+
+  /* Sticky Metrics for Mobile */
+  .metrics-grid {
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    grid-template-columns: 1fr 1fr;
+    gap: 0.5rem;
+    background: var(--primary-bg);
+    padding: 0.5rem 0.25rem;
+    margin-bottom: 0.5rem;
+    border-bottom: 1px solid var(--border-color);
+  }
+
+  .metric-card {
+    padding: 1rem 0.5rem !important;
+    border-radius: 0.5rem;
+  }
+
+  .metric-label {
+    font-size: 0.8rem;
+  }
+
+  .metric-value {
+    font-size: 1.8rem;
+    margin: 0.25rem 0;
+  }
+
+  .metric-unit {
+    font-size: 0.75rem;
+  }
+
+  /* Compact nested results in metric cards */
+  .metric-breakdown {
+    margin-top: 0.75rem;
+    font-size: 0.75rem;
+  }
+
+  .charts-grid {
+    grid-template-columns: 1fr;
+    padding: 0 0.5rem;
+  }
+
+  .chart-container {
+    height: auto;
+  }
+
+  .value-display {
+    width: 65px;
+    font-size: 0.8rem;
+  }
+
+  footer {
+    margin-top: 2rem;
+  }
+}
+
+/* Waterfall Chart Styling */
+.waterfall-wrapper {
+  grid-column: 1 / -1;
+  margin-top: 1rem;
+}
+
+.waterfall-card {
+  padding: 1rem;
+}
+
+.waterfall-header {
+  margin-bottom: 2rem;
+  text-align: center;
+}
+
+.waterfall-header h3 {
+  font-size: 1.5rem;
+  color: var(--primary-accent);
+  margin-bottom: 0.5rem;
+}
+
+.waterfall-header p {
+  color: rgba(255, 255, 255, 0.6);
+  font-size: 0.9rem;
+}
+
+.waterfall-chart-container {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-end;
+  height: 400px;
+  padding: 2rem 1rem 0;
+  position: relative;
+  background: rgba(0, 0, 0, 0.2);
+  border-radius: var(--border-radius);
+  border: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+.waterfall-column {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  height: 100%;
+  position: relative;
+  z-index: 2;
+}
+
+.waterfall-track {
+  width: 100%;
+  height: 100%;
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  align-items: center;
+}
+
+.waterfall-label {
+  position: absolute;
+  font-family: var(--font-mono);
+  font-size: 1.1rem;
+  font-weight: 700;
+  color: #fff;
+  transition: all var(--transition-speed) ease;
+  z-index: 10;
+  white-space: nowrap;
+}
+
+.waterfall-bar {
+  width: 60%;
+  position: absolute;
+  border-radius: 4px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
+  overflow: hidden;
+}
+
+/* Base Bar (Step 1) */
+.waterfall-bar.base-bar {
+  background: linear-gradient(135deg, var(--primary-accent) 0%, #00b09b 100%);
+  opacity: 0.9;
+}
+
+/* Difference Bars (Steps 2-6) */
+.waterfall-bar.diff-bar {
+  background: linear-gradient(135deg, var(--secondary-accent) 0%, #0052d4 100%);
+  opacity: 0.85;
+}
+
+.waterfall-bar::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 50%;
+  height: 100%;
+  background: linear-gradient(to right, transparent, rgba(255, 255, 255, 0.2), transparent);
+  transform: skewX(-20deg);
+  transition: all 0.5s;
+}
+
+.waterfall-bar.hovered {
+  transform: scale(1.05) translateY(-5px);
+  opacity: 1;
+  box-shadow: 0 10px 25px rgba(0, 255, 170, 0.2);
+}
+
+.waterfall-bar.hovered::before {
+  left: 150%;
+  transition: 0.5s;
+}
+
+.diff-text {
+  font-family: var(--font-mono);
+  font-size: 0.85rem;
+  color: #fff;
+  font-weight: bold;
+  opacity: 0.9;
+  text-shadow: 0 1px 3px rgba(0, 0, 0, 0.5);
+}
+
+.waterfall-x-label {
+  margin-top: 1rem;
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: var(--text-light);
+  text-align: center;
+  position: relative;
+  cursor: help;
+  height: 40px;
+}
+
+.waterfall-tooltip {
+  position: absolute;
+  bottom: 120%;
+  left: 50%;
+  transform: translateX(-50%);
+  background: rgba(10, 15, 25, 0.95);
+  border: 1px solid var(--primary-accent);
+  padding: 0.75rem 1rem;
+  border-radius: var(--border-radius);
+  color: #fff;
+  font-size: 0.8rem;
+  white-space: nowrap;
+  pointer-events: none;
+  z-index: 100;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+  animation: fadeInTooltip 0.2s ease forwards;
+}
+
+.waterfall-tooltip::after {
+  content: "";
+  position: absolute;
+  top: 100%;
+  left: 50%;
+  transform: translateX(-50%);
+  border-width: 6px;
+  border-style: solid;
+  border-color: var(--primary-accent) transparent transparent transparent;
+}
+
+@keyframes fadeInTooltip {
+  from {
+    opacity: 0;
+    transform: translate(-50%, 10px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translate(-50%, 0);
+  }
+}
+
+@media (max-width: 768px) {
+  .waterfall-chart-container {
+    height: 300px;
+    padding-top: 2.5rem;
+  }
+
+  .waterfall-x-label span {
+    writing-mode: vertical-rl;
+    text-orientation: mixed;
+    display: inline-block;
+    padding-top: 10px;
+  }
+
+  .waterfall-x-label {
+    height: 120px;
+    margin-top: 0.5rem;
+  }
+
+  .waterfall-label {
+    font-size: 0.85rem;
+    transform: rotate(-45deg);
+    transform-origin: left bottom;
+  }
+
+  .diff-text {
+    font-size: 0.7rem;
+  }
+}
+
+
+/* Tornado Chart Styling */
+.tornado-card {
+  padding: 2rem;
+  margin-top: 2rem;
+  grid-column: 1 / -1;
+}
+
+.tornado-controls {
+  text-align: center;
+  margin-bottom: 2rem;
+  color: var(--text-light);
+}
+
+.tornado-controls input {
+  vertical-align: middle;
+  margin: 0 10px;
+  cursor: pointer;
+}
+
+.tornado-chart-container {
+  display: flex;
+  flex-direction: column;
+  position: relative;
+  padding: 20px 0;
+  gap: 15px;
+}
+
+.tornado-center-line {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 50%;
+  width: 2px;
+  background-color: var(--primary-accent);
+  opacity: 0.6;
+  z-index: 10;
+  transform: translateX(-50%);
+}
+
+.tornado-center-value {
+  position: absolute;
+  top: -10px;
+  left: 50%;
+  transform: translateX(-50%);
+  background: var(--bg-card);
+  padding: 2px 8px;
+  border-radius: 4px;
+  font-size: 0.85rem;
+  color: var(--primary-accent);
+  z-index: 11;
+  font-weight: bold;
+}
+
+.tornado-row {
+  display: flex;
+  align-items: center;
+  position: relative;
+}
+
+.tornado-label-col {
+  width: 20%;
+  text-align: right;
+  padding-right: 20px;
+  font-size: 0.9rem;
+  color: #fff;
+  font-weight: 500;
+}
+
+.tornado-bars-col {
+  width: 80%;
+  display: flex;
+  position: relative;
+  height: 36px;
+  align-items: center;
+}
+
+.tornado-bar-side {
+  width: 50%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  position: relative;
+}
+
+.left-side {
+  justify-content: flex-end;
+}
+
+.right-side {
+  justify-content: flex-start;
+}
+
+.tornado-bar {
+  height: 80%;
+  border-radius: 4px;
+  display: flex;
+  align-items: center;
+  transition: all 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+  position: relative;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+  overflow: hidden;
+  min-width: 40px;
+  /* To fit the text */
+}
+
+/* Base costs falling down -> Cost decreases -> Good -> Green color */
+.bar-negative {
+  background: linear-gradient(90deg, #0ba360 0%, #3cba92 100%);
+  border-top-right-radius: 0;
+  border-bottom-right-radius: 0;
+  justify-content: flex-start;
+  padding-left: 10px;
+}
+
+/* Base costs going up -> Cost increases -> Bad -> Red color */
+.bar-positive {
+  background: linear-gradient(90deg, #ff416c 0%, #ff4b2b 100%);
+  border-top-left-radius: 0;
+  border-bottom-left-radius: 0;
+  justify-content: flex-end;
+  padding-right: 10px;
+}
+
+.tornado-bar.hovered {
+  transform: scaleY(1.15);
+  box-shadow: 0 0 15px rgba(255, 255, 255, 0.2);
+  filter: brightness(1.1);
+  z-index: 5;
+}
+
+.bar-val-text {
+  font-family: var(--font-mono);
+  font-size: 0.8rem;
+  color: #fff;
+  font-weight: 700;
+  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.8);
+  white-space: nowrap;
+}
+
+.tornado-tooltip {
+  position: absolute;
+  top: -40px;
+  left: 50%;
+  transform: translateX(-50%);
+  background: rgba(10, 15, 25, 0.95);
+  border: 1px solid var(--secondary-accent);
+  padding: 0.5rem 1rem;
+  border-radius: var(--border-radius);
+  color: #fff;
+  font-size: 0.8rem;
+  white-space: nowrap;
+  pointer-events: none;
+  z-index: 100;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+}
+
+@media (max-width: 768px) {
+  .tornado-label-col {
+    width: 30%;
+    font-size: 0.75rem;
+    padding-right: 10px;
+  }
+
+  .tornado-bars-col {
+    width: 70%;
+  }
+
+  .bar-val-text {
+    font-size: 0.65rem;
+  }
 }
